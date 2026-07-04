@@ -17,7 +17,7 @@ function SaveActionsButton() {
 
   saveActionsServiceRef.current = new Service({
     ros,
-    name: 'akushon/config/save_actions',
+    name: 'action/save_actions',
     messageType: 'akushon_interfaces/srv/SaveActions',
   });
 

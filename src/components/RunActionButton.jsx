@@ -16,7 +16,7 @@ function RunActionButton() {
 
   runActionTopicRef.current = new Topic({
     ros,
-    name: '/run_action',
+    name: 'action/run_action',
     messageType: 'action_interface/msg/RunAction',
   });
 

@@ -7,30 +7,28 @@ import AppContext from '../context/AppContext';
 import LoggerContext from '../context/LoggerContext';
 
 const jointIdList = {
-  right_shoulder_pitch: 1,
+  head_yaw: 0,
+  head_pitch: 1,
   left_shoulder_pitch: 2,
-  right_shoulder_roll: 3,
-  left_shoulder_roll: 4,
-  right_elbow: 5,
-  left_elbow: 6,
-  right_hip_yaw: 7,
-  left_hip_yaw: 8,
-  right_hip_roll: 9,
-  left_hip_roll: 10,
-  right_hip_pitch: 11,
-  left_hip_pitch: 12,
-  right_knee: 13,
-  left_knee: 14,
-  right_ankle_pitch: 15,
-  left_ankle_pitch: 16,
-  right_ankle_roll: 17,
-  left_ankle_roll: 18,
-  neck_yaw: 19,
-  neck_pitch: 20,
-  right_gripper: 21,
-  left_gripper: 22,
-  right_shoulder_yaw: 23,
-  left_shoulder_yaw: 24,
+  left_shoulder_roll: 3,
+  left_shoulder_yaw: 4,
+  left_elbow: 5,
+  right_shoulder_pitch: 6,
+  right_shoulder_roll: 7,
+  right_shoulder_yaw: 8,
+  right_elbow_pitch: 9,
+  left_hip_pitch: 10,
+  left_hip_roll: 11,
+  left_hip_yaw: 12,
+  left_knee: 13,
+  left_ankle_up: 14,
+  left_ankle_down: 15,
+  right_hip_pitch: 16,
+  right_hip_roll: 17,
+  right_hip_yaw: 18,
+  right_knee: 19,
+  right_ankle_up: 20,
+  right_ankle_down: 21
 };
 
 function AddDataButton(props) {
@@ -65,9 +63,8 @@ function AddDataButton(props) {
       const newPose = {
         id: 0,
         name: 'New Pose',
-        speed: 0,
-        time: 1,
-        pause: 0,
+        duration: 0,
+        delay_before: 0,
         joints: newJointPose,
       };
 
@@ -75,10 +72,7 @@ function AddDataButton(props) {
         id: actionsData.length,
         name: 'new_action',
         next: '',
-        start_delay: 0,
-        stop_delay: 0,
-        poses: [newPose],
-        time_based: true,
+        control_type: 'upper_body'
       };
 
       setActionsData((prevActionsData) => [...prevActionsData, newAction]);
@@ -96,12 +90,11 @@ function AddDataButton(props) {
       }
 
       const newPose = {
-        id: posesData.length,
+        id: 0,
         name: 'New Pose',
-        speed: 0,
-        time: 1,
-        pause: 0,
-        joints: currentPose.joints,
+        duration: 0,
+        delay_before: 0,
+        joints: newJointPose
       };
 
       updatePosesData(newPose);

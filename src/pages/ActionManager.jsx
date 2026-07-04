@@ -137,10 +137,13 @@ const jointIdList = {
   right_hip_yaw: 18,
   right_knee: 19,
   right_ankle_up: 20,
-  right_ankle_down: 21,
+  right_ankle_down: 21
+};
+
+const gripperId = {
   left_gripper: 22,
   right_gripper: 23
-};
+}
 
 function ActionManager() {
   const {

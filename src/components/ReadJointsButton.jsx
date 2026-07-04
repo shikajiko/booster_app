@@ -30,9 +30,12 @@ const jointIdList = {
   19: "right_knee",
   20: "right_ankle_up",
   21: "right_ankle_down",
+};
+
+const gripperId = {
   22: "left_gripper",
   23: "right_gripper",
-};
+}
 
 function ReadJointsButton() {
   const { setJointRobotData } = useContext(AppContext);
@@ -54,8 +57,8 @@ function ReadJointsButton() {
     if (ros) {
       readJointsTopicRef.current = new Topic({
         ros,
-        name: '/joint/current_joints',
-        messageType: 'tachimawari_interfaces/msg/CurrentJoints',
+        name: 'joint/current_joints',
+        messageType: 'booster_joint_interface/msg/SetJoints',
       });
     }
 
