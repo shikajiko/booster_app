@@ -16,8 +16,8 @@ function RunActionButton() {
 
   runActionTopicRef.current = new Topic({
     ros,
-    name: 'action/run_action',
-    messageType: 'akushon_interfaces/msg/RunAction',
+    name: '/run_action',
+    messageType: 'action_interface/msg/RunAction',
   });
 
   const handlePublish = () => {
@@ -61,9 +61,8 @@ function RunActionButton() {
         }
         fixedPoses.push({
           name: rawPose[j].name,
-          pause: rawPose[j].pause,
-          speed: rawPose[j].speed,
-          time: rawPose[j].time,
+          duration: rawPose[j].duration,
+          delay_before: rawPose[j].before,
           joints: jointsData,
         });
       }
@@ -72,18 +71,15 @@ function RunActionButton() {
     const rawAction = {
       name: currentAction.name,
       next: currentAction.next,
-      start_delay: currentAction.start_delay,
-      stop_delay: currentAction.stop_delay,
-      time_based: currentAction.time_based,
+      control_type: currentAction.control_type,
       poses: fixedPoses,
     };
 
     const json = JSON.stringify(rawAction);
 
     const runActionMessage = new Message({
-      control_type: 1,
       action_name: currentAction.name,
-      json,
+      json_data
     });
 
     runActionTopicRef.current.publish(runActionMessage);
