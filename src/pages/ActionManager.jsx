@@ -12,6 +12,10 @@ import {
   Switch,
   TextField,
   FormControlLabel,
+  FormControl,
+  MenuItem,
+  InputLabel,
+  Select
 } from '@mui/material';
 
 import SetTorquesButton from '../components/SetTorquesButton';
@@ -277,9 +281,9 @@ function ActionManager() {
             <SaveActionsButton />
             <GetActionsButton />
             <AddDataButton typeData="action" />
-            <MirrorActionButton />
+            {/* <MirrorActionButton />
             <BrakeActionButton />
-            <CancelActionButton />
+            <CancelActionButton /> */}
           </div>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
@@ -332,12 +336,29 @@ function ActionManager() {
                     shrink: true,
                   }}
                 />
-                <FormControlLabel
-                  control={
-                    <Switch checked={checked} onChange={handleClickedSwitch} />
-                  }
-                  label="Time-based"
-                />
+                <FormControl
+                  margin="dense"
+                  style={{ margin: 3, marginTop: 20, width: "30%" }}
+                >
+                  <InputLabel id="control-type-label">Control Type</InputLabel>
+                  <Select
+                    labelId='control-type-label'
+                    value={currentAction?.control_type || "upper_body"}
+                    label="Control Type"
+                    onChange={(event) => {
+                      if (currentAction.id === undefined) return;
+
+                      const newAction = {
+                        ...currentAction,
+                        control_type: event.target.value
+                      };
+                      updateActionsData(newAction);
+                    }}
+                  >
+                    <MenuItem value="upper_body">Upper Body</MenuItem>
+                    <MenuItem value="full_body">Full Body</MenuItem>
+                  </Select>
+                </FormControl>
               </div>
               <div style={{ height: 360, width: '100%' }}>
                 <DataGrid

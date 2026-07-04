@@ -42,18 +42,15 @@ function SaveActionsButton() {
         }
         fixedPoses.push({
           name: rawPoses[i].name,
-          pause: parseFloat(rawPoses[i].pause),
-          speed: parseFloat(rawPoses[i].speed),
-          time: parseFloat(rawPoses[i].time),
+          delay_before: parseFloat(rawPoses[i].delay_before),
+          duration: parseFloat(rawPoses[i].duration),
           joints: jointsData,
         });
       }
       const action = {
         name: jsonActionsData[key].name,
         next: jsonActionsData[key].next,
-        start_delay: jsonActionsData[key].start_delay,
-        stop_delay: jsonActionsData[key].stop_delay,
-        time_based: jsonActionsData[key].time_based,
+        control_type: jsonActionsData[key].control_type,
         poses: fixedPoses,
       };
       rawActions[jsonActionsData[key].name.toLowerCase()] = action;
