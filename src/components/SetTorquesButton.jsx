@@ -26,7 +26,7 @@ function SetTorquesButton() {
   setTorquesTopicRef.current = new Topic({
     ros,
     name: 'joint/set_torques',
-    messageType: 'tachimawari_interfaces/msg/SetTorques',
+    messageType: 'booster_joint_interface/msg/SetTorques',
   });
 
   const handlePublish = () => {

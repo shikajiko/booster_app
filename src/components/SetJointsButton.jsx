@@ -17,16 +17,16 @@ function SetJointsButton(props) {
   const runActionTopicRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  setJointsTopicRef.current = new Topic({
-    ros,
-    name: 'joint/set_joints',
-    messageType: 'tachimawari_interfaces/msg/SetJoints',
-  });
+  // setJointsTopicRef.current = new Topic({
+  //   ros,
+  //   name: 'joint/set_joints',
+  //   messageType: 'tachimawari_interfaces/msg/SetJoints',
+  // });
 
   runActionTopicRef.current = new Topic({
     ros,
     name: 'action/run_action',
-    messageType: 'akushon_interfaces/msg/RunAction',
+    messageType: 'booster_action_interface/msg/RunAction',
   });
 
   const handlePublish = () => {
@@ -56,27 +56,23 @@ function SetJointsButton(props) {
 
     const fixedPose = {
       name: 'step',
-      pause: 0.0,
-      speed: 0.0,
-      time: 1.0,
+      delay_before: 0.0,
+      duration: 1.0,
       joints,
     };
 
     const rawAction = {
       name: 'run_step',
       next: '',
-      start_delay: 0.0,
-      stop_delay: 0.0,
-      time_based: true,
+      control_type: 'upper_control',
       poses: [fixedPose],
     };
 
     const json = JSON.stringify(rawAction);
 
     const runActionMessage = new Message({
-      control_type: 1,
       action_name: 'run_step',
-      json,
+      json
     });
 
     runActionTopicRef.current.publish(runActionMessage);
