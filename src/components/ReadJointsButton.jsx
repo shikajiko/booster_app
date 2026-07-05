@@ -57,7 +57,7 @@ function ReadJointsButton() {
     if (ros) {
       readJointsTopicRef.current = new Topic({
         ros,
-        name: 'joint/current_joints',
+        name: '/joint/current_joints',
         messageType: 'booster_joint_interface/msg/SetJoints',
       });
     }
@@ -71,7 +71,7 @@ function ReadJointsButton() {
 
   const handleCall = () => {
     if (!ros || !readJointsTopicRef.current || isSubscribed) return;
-
+    
     setIsLoading(true);
 
     readJointsTopicRef.current.subscribe(
@@ -98,9 +98,10 @@ function ReadJointsButton() {
 
     const newJointRobotData = [];
     for (let i = 0; i < currentJoints.length; i += 1) {
+      console.log("length: " + currentJoints.length);
       newJointRobotData.push({
         id: parseInt(currentJoints[i].id, 10),
-        name: jointIdList[i + 1],
+        name: jointIdList[i],
         pose_pos: parseFloat(currentJoints[i].position),
         status: true,
       });

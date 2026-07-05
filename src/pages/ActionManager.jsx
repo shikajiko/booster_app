@@ -346,7 +346,7 @@ function ActionManager() {
                   <InputLabel id="control-type-label">Control Type</InputLabel>
                   <Select
                     labelId='control-type-label'
-                    value={currentAction?.control_type || "upper_body"}
+                    value={currentAction?.control_type || ''}
                     label="Control Type"
                     onChange={(event) => {
                       if (currentAction.id === undefined) return;

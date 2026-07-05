@@ -17,8 +17,8 @@ function SaveActionsButton() {
 
   saveActionsServiceRef.current = new Service({
     ros,
-    name: 'action/save_actions',
-    messageType: 'akushon_interfaces/srv/SaveActions',
+    name: '/action/save_actions',
+    messageType: 'booster_action_interface/srv/SaveActions',
   });
 
   const handleCall = () => {

@@ -56,9 +56,7 @@ function App() {
       id: currentAction.id,
       name: currentAction.name,
       next: currentAction.next,
-      start_delay: currentAction.start_delay,
-      stop_delay: currentAction.stop_delay,
-      time_based: currentAction.time_based,
+      control_type: currentAction.control_type,
       poses: newPosesData,
     };
     updateActionsData(newAction);
