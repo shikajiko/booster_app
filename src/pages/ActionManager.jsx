@@ -9,9 +9,7 @@ import {
   Card,
   CardContent,
   Grid,
-  Switch,
   TextField,
-  FormControlLabel,
   FormControl,
   MenuItem,
   InputLabel,
@@ -26,12 +24,7 @@ import AddDataButton from '../components/AddDataButton';
 import ReadJointsButton from '../components/ReadJointsButton';
 import ManagePoseButton from '../components/ManagePoseButton';
 import SaveActionsButton from '../components/SaveActionsButton';
-import BrakeActionButton from '../components/BrakeActionButton';
-import CancelActionButton from '../components/CancelActionButton';
-import SetInitButton from '../components/SetInitButton';
 import SetJointsOnCellEdit from '../components/SetJointsOnCellEdit';
-import WalkReadyButton from '../components/WalkReadyButton';
-import MirrorActionButton from '../components/MirrorActionButton';
 import SearchBar from '../components/SearchBar';
 import AppContext from '../context/AppContext';
 import LoggerContext from '../context/LoggerContext';
@@ -162,7 +155,6 @@ function ActionManager() {
   } = useContext(AppContext);
 
   const { showLog } = useContext(LoggerContext);
-  const [checked, setChecked] = useState(false);
   const [searchText, setSearchText] = useState('');
 
   const updateJointPoseData = (newJoints, index) => {
@@ -188,23 +180,6 @@ function ActionManager() {
     const currentPoses = actionsData[event.row.id].poses;
     setPosesData(currentPoses);
     setJointPoseData([]);
-    setChecked(event.row.time_based);
-  };
-
-  const handleClickedSwitch = (event) => {
-    if (Object.keys(currentAction).length !== 0) {
-      setChecked(event.target.checked);
-      const newAction = {
-        id: currentAction.id,
-        name: currentAction.name,
-        next: currentAction.next,
-        control_type: currentAction.control_type,
-        poses: currentAction.poses,
-      };
-      updateActionsData(newAction);
-    } else {
-      showLog('Pick an action first!', 'error');
-    }
   };
 
   const handleClickedPose = (event) => {
@@ -219,7 +194,7 @@ function ActionManager() {
       currentJointPoseData.push({
         id: jointId,
         name: key,
-        pose_pos: currentPoses.joints[jointId - 1].pose_pos,
+        pose_pos: currentPoses.joints[jointId].pose_pos,
       });
     });
     setJointPoseData(currentJointPoseData);
@@ -284,9 +259,6 @@ function ActionManager() {
             <SaveActionsButton />
             <GetActionsButton />
             <AddDataButton typeData="action" />
-            {/* <MirrorActionButton />
-            <BrakeActionButton />
-            <CancelActionButton /> */}
           </div>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
@@ -301,11 +273,11 @@ function ActionManager() {
                   margin="dense"
                   value={currentAction ? currentAction.name : ''}
                   onChange={(event) => {
-                    if (!currentAction.id) return;
+                    if (currentAction.id === undefined) return;
                     const formattedName = event.target.value.toLowerCase().replace(/ /g, '_');
                     const newAction = {
                       id: currentAction.id,
-                      name: currentAction.name,
+                      name: formattedName,
                       next: currentAction.next,
                       control_type: currentAction.control_type,
                       poses: currentAction.poses,
@@ -324,11 +296,11 @@ function ActionManager() {
                   margin="dense"
                   value={currentAction ? currentAction.next : ''}
                   onChange={(event) => {
-                    if (!currentAction.id) return;
+                    if (currentAction.id === undefined) return;
                     const newAction = {
                       id: currentAction.id,
                       name: currentAction.name,
-                      next: currentAction.next,
+                      next: event.target.value,
                       control_type: currentAction.control_type,
                       poses: currentAction.poses,
                     };
@@ -395,10 +367,10 @@ function ActionManager() {
                   if (currentPose.id === undefined) return;
                   const newPose = {
                     id: currentPose.id,
-                    name: currentPose.name,
+                    name: event.target.value,
                     duration: currentPose.duration,
                     delay_before: currentPose.delay_before,
-                    joints: newJointPoseData,
+                    joints: currentPose.joints,
                   };
                   updatePosesData(newPose);
                 }}
@@ -413,7 +385,7 @@ function ActionManager() {
                 variant="outlined"
                 margin="dense"
                 type="number"
-                value={currentPose ? currentPose.time : 0}
+                value={currentPose ? currentPose.duration : 0}
                 onChange={(event) => {
                   if (currentPose.id === undefined) return;
                   const newPose = {
@@ -421,7 +393,7 @@ function ActionManager() {
                     name: currentPose.name,
                     duration: Number(event.target.value),
                     delay_before: currentPose.delay_before,
-                    joints: newJointPoseData
+                    joints: currentPose.joints,
                   };
                   updatePosesData(newPose);
                 }}
@@ -436,7 +408,7 @@ function ActionManager() {
                 variant="outlined"
                 margin="dense"
                 type="number"
-                value={currentPose ? currentPose.pause : 0}
+                value={currentPose ? currentPose.delay_before : 0}
                 onChange={(event) => {
                   if (currentPose.id === undefined) return;
                   const newPose = {
@@ -444,7 +416,7 @@ function ActionManager() {
                     name: currentPose.name,
                     duration: currentPose.duration,
                     delay_before: Number(event.target.value),
-                    joints: newJointPoseData,
+                    joints: currentPose.joints,
                   };
                   updatePosesData(newPose);
                 }}
@@ -457,8 +429,6 @@ function ActionManager() {
           </Card>
           <div style={{ marginTop: 10, marginBottom: -10 }}>
             <RunActionButton />
-            {/* <WalkReadyButton /> */}
-            {/* <SetInitButton /> */}
           </div>
         </Grid>
         <Grid item xs={12} lg={3}>

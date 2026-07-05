@@ -75,7 +75,7 @@ function RunActionButton() {
       poses: fixedPoses,
     };
 
-    const json = JSON.stringify(rawAction);
+    const json_data = JSON.stringify(rawAction);
 
     const runActionMessage = new Message({
       action_name: currentAction.name,
