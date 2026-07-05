@@ -17,7 +17,7 @@ function RunActionButton() {
   runActionTopicRef.current = new Topic({
     ros,
     name: 'action/run_action',
-    messageType: 'action_interface/msg/RunAction',
+    messageType: 'booster_action_interface/msg/RunAction',
   });
 
   const handlePublish = () => {
