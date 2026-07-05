@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
-
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-
 import AppContext from '../context/AppContext';
 import LoggerContext from '../context/LoggerContext';
 
@@ -28,7 +26,7 @@ const jointIdList = {
   right_hip_yaw: 18,
   right_knee: 19,
   right_ankle_up: 20,
-  right_ankle_down: 21
+  right_ankle_down: 21,
 };
 
 function AddDataButton(props) {
@@ -36,69 +34,47 @@ function AddDataButton(props) {
     actionsData,
     posesData,
     setActionsData,
-    currentPose,
     updatePosesData,
   } = useContext(AppContext);
   const { typeData } = props;
-
   const { showLog } = useContext(LoggerContext);
+
+  const buildEmptyJoints = () => {
+    const joints = [];
+    Object.keys(jointIdList).forEach((name) => {
+      joints.push({
+        id: jointIdList[name],
+        name,
+        pose_pos: 0,
+      });
+    });
+    return joints;
+  };
 
   const handleClick = () => {
     if (typeData === 'action') {
-      if (actionsData.length === 0) {
-        showLog('Action data is empty!', 'error');
-        return;
-      }
-
-      const newJointPose = [];
-      Object.keys(jointIdList).forEach((index) => {
-        const jointId = jointIdList[index];
-        newJointPose.push({
-          id: jointId,
-          name: index,
-          pose_pos: 0,
-        });
-      });
-
-      const newPose = {
-        id: 0,
-        name: 'New Pose',
-        duration: 0,
-        delay_before: 0,
-        joints: newJointPose,
-      };
-
       const newAction = {
         id: actionsData.length,
         name: 'new_action',
         next: '',
-        control_type: 'upper_body'
+        control_type: 'upper_body',
+        poses: [],
       };
-
       setActionsData((prevActionsData) => [...prevActionsData, newAction]);
-
       showLog('New action added', 'info');
     } else if (typeData === 'pose') {
-      if (posesData.length === 0) {
+      if (posesData.length === 0 && Object.keys(actionsData).length === 0) {
         showLog('Pick an action first!', 'error');
         return;
       }
-
-      if (Object.keys(currentPose).length === 0) {
-        showLog('Pick a pose first!', 'error');
-        return;
-      }
-
       const newPose = {
-        id: 0,
+        id: posesData.length,
         name: 'New Pose',
         duration: 0,
         delay_before: 0,
-        joints: newJointPose
+        joints: buildEmptyJoints(),
       };
-
       updatePosesData(newPose);
-
       showLog('New pose added', 'info');
     } else {
       showLog(`Unknown type data: ${typeData}`);
