@@ -55,10 +55,10 @@ function SaveActionsButton() {
       };
       rawActions[jsonActionsData[key].name.toLowerCase()] = action;
     });
-    const json = JSON.stringify(rawActions);
+    const json_data = JSON.stringify(rawActions);
 
     const saveActionsServiceRequest = new ServiceRequest({
-      json,
+      json_data,
     });
 
     saveActionsServiceRef.current.callService(

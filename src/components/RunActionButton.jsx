@@ -16,7 +16,7 @@ function RunActionButton() {
 
   runActionTopicRef.current = new Topic({
     ros,
-    name: 'action/run_action',
+    name: '/action/run_action',
     messageType: 'booster_action_interface/msg/RunAction',
   });
 
@@ -62,7 +62,7 @@ function RunActionButton() {
         fixedPoses.push({
           name: rawPose[j].name,
           duration: rawPose[j].duration,
-          delay_before: rawPose[j].before,
+          delay_before: rawPose[j].delay_before,
           joints: jointsData,
         });
       }

@@ -10,7 +10,7 @@ import AppContext from '../context/AppContext';
 import { useRos } from '../context/RosContext';
 
 function SetJointsButton(props) {
-  const { setJointRobotData, jointPoseData } = useContext(AppContext);
+  const { setJointRobotData, jointPoseData, currentAction } = useContext(AppContext);
   const { typeButton } = props;
   const { ros } = useRos();
   const setJointsTopicRef = useRef(null);
@@ -25,7 +25,7 @@ function SetJointsButton(props) {
 
   runActionTopicRef.current = new Topic({
     ros,
-    name: 'action/run_action',
+    name: '/action/run_action',
     messageType: 'booster_action_interface/msg/RunAction',
   });
 
@@ -42,7 +42,6 @@ function SetJointsButton(props) {
           id: jointPoseData[i].id,
           name: jointPoseData[i].name,
           pose_pos: jointPoseData[i].pose_pos,
-          status: 'ON',
         });
       }
       setJointRobotData(newJointRobotData);
@@ -64,15 +63,15 @@ function SetJointsButton(props) {
     const rawAction = {
       name: 'run_step',
       next: '',
-      control_type: 'upper_control',
+      control_type: currentAction?.control_type || 'upper_body',
       poses: [fixedPose],
     };
 
-    const json = JSON.stringify(rawAction);
+    const json_data = JSON.stringify(rawAction);
 
     const runActionMessage = new Message({
       action_name: 'run_step',
-      json
+      json_data
     });
 
     runActionTopicRef.current.publish(runActionMessage);

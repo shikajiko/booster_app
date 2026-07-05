@@ -109,28 +109,28 @@ const jointPoseColumns = [
 ];
 
 const jointIdList = {
-  head_yaw: 0,
-  head_pitch: 1,
-  left_shoulder_pitch: 2,
-  left_shoulder_roll: 3,
-  left_shoulder_yaw: 4,
-  left_elbow: 5,
-  right_shoulder_pitch: 6,
-  right_shoulder_roll: 7,
-  right_shoulder_yaw: 8,
-  right_elbow_pitch: 9,
-  left_hip_pitch: 10,
-  left_hip_roll: 11,
-  left_hip_yaw: 12,
-  left_knee: 13,
-  left_ankle_up: 14,
-  left_ankle_down: 15,
-  right_hip_pitch: 16,
-  right_hip_roll: 17,
-  right_hip_yaw: 18,
-  right_knee: 19,
-  right_ankle_up: 20,
-  right_ankle_down: 21
+  HeadYaw: 0,
+  HeadPitch: 1,
+  LeftShoulderPitch: 2,
+  LeftShoulderRoll: 3,
+  LeftShoulderYaw: 4,
+  LeftElbow: 5,
+  RightShoulderPitch: 6,
+  RightShoulderRoll: 7,
+  RightShoulderYaw: 8,
+  RightElbowPitch: 9,
+  LeftHipPitch: 10,
+  LeftHipRoll: 11,
+  LeftHipYaw: 12,
+  LeftKnee: 13,
+  LeftAnkleUp: 14,
+  LeftAnkleDown: 15,
+  RightHipPitch: 16,
+  RightHipRoll: 17,
+  RightHipYaw: 18,
+  RightKnee: 19,
+  RightAnkleUp: 20,
+  RightAnkleDown: 21,
 };
 
 const gripperId = {
@@ -453,7 +453,7 @@ function ActionManager() {
             />
           </div>
           <div style={{ marginTop: 10, float: 'right' }}>
-            <SetJointsButton typeButton="to_robot" />
+            {/* <SetJointsButton typeButton="to_robot" /> */}
           </div>
         </Grid>
         <Grid item xs={6} lg={3}>
