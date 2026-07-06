@@ -33,9 +33,14 @@ const jointIdList = {
 };
 
 const gripperId = {
-  22: "left_gripper",
-  23: "right_gripper",
+  22: "LeftGripper",
+  23: "RightGripper",
 }
+
+if (process.env.WITH_GRIPPER === 'true') {
+  Object.assign(jointIdList, gripperId);
+}
+
 
 function ReadJointsButton() {
   const { setJointRobotData } = useContext(AppContext);

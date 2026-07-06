@@ -134,8 +134,12 @@ const jointIdList = {
 };
 
 const gripperId = {
-  left_gripper: 22,
-  right_gripper: 23
+  LeftGripper: 22,
+  RightGripper: 23
+}
+
+if (process.env.WITH_GRIPPER === 'true') {
+  Object.assign(jointIdList, gripperId);
 }
 
 function ActionManager() {

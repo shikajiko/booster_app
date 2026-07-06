@@ -33,6 +33,15 @@ const jointIdList = {
   RightAnkleDown: 21,
 };
 
+const gripperId = {
+  LeftGripper: 22,
+  RightGripper: 23,
+}
+
+if (process.env.WITH_GRIPPER === 'true') {
+  Object.assign(jointIdList, gripperId);
+}
+
 function LoadConfigButton() {
   const { showLog } = useContext(LoggerContext);
   const { ros } = useRos();
