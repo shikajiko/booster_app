@@ -15,7 +15,7 @@ const BtnColor = {
     OFF: 'error',
 }
 
-function ChangeUpcButton({ status }) {
+function ChangeUpcButton({ status, sx }) {
   const { ros } = useRos();
   const { showLog } = useContext(LoggerContext);
   const changeUpcStateRef = useRef(null);
@@ -64,11 +64,11 @@ function ChangeUpcButton({ status }) {
       color={BtnColor[status]}
       variant="contained"
       loading={isLoading}
-      sx={{ margin: 1 }}
+      sx={{ margin: 0.5, ...sx }}
     >
       {status}
     </LoadingButton>
   );
 }
 
-export default ChangeModeButton;
+export default ChangeUpcButton;

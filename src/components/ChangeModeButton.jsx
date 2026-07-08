@@ -17,7 +17,7 @@ const BtnColor = {
     CUSTOM: 'error'
 }
 
-function ChangeModeButton({ type }) {
+function ChangeModeButton({ type, sx }) {
   const { ros } = useRos();
   const { showLog } = useContext(LoggerContext);
   const changeRobotModeServiceRef = useRef(null);
@@ -63,10 +63,10 @@ function ChangeModeButton({ type }) {
   return (
     <LoadingButton
       onClick={handleCall}
-      color={BtnColor[type]}
+      color="primary"
       variant="contained"
       loading={isLoading}
-      sx={{ margin: 1 }}
+      sx={{ margin: 0.5, ...sx }}
     >
       {type}
     </LoadingButton>

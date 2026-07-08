@@ -28,6 +28,8 @@ import SetJointsOnCellEdit from '../components/SetJointsOnCellEdit';
 import SearchBar from '../components/SearchBar';
 import AppContext from '../context/AppContext';
 import LoggerContext from '../context/LoggerContext';
+import ChangeModeButton from '../components/ChangeModeButton';
+import ChangeUpcButton from '../components/ChangeUpcButton';
 
 const actionColumns = [
   {
@@ -450,7 +452,21 @@ function ActionManager() {
               rowsPerPageOptions={[]}
             />
           </div>
-          <div style={{ marginTop: 10, float: 'right' }}>
+          <div style={{ marginTop: 0, width: '100%' }}>
+            <Card style={{ marginTop: 15, width: '100%' }}>
+              <CardContent>
+                <MuiTypography variant="subtitle1">Mode Change</MuiTypography>
+                <Box sx={{ display: 'flex', gap: 1, marginTop: 1.5 }}>
+                  <ChangeModeButton type={'WALK'} sx={{ flex: 1, height: 44 }} />
+                  <ChangeModeButton type={'PREP'} sx={{ flex: 1, height: 44 }} />
+                  <ChangeModeButton type={'CUSTOM'} sx={{ flex: 1, height: 44 }} />
+                </Box>
+                <Box sx={{ display: 'flex', gap: 1, marginTop: 1 }}>
+                  <ChangeUpcButton status={'OFF'} sx={{ flex: 1, height: 44 }} />
+                  <ChangeUpcButton status={'ON'} sx={{ flex: 1, height: 44 }} />
+                </Box>
+              </CardContent>
+            </Card>
             {/* <SetJointsButton typeButton="to_robot" /> */}
           </div>
         </Grid>
