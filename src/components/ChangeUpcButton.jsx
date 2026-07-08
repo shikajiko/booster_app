@@ -5,56 +5,54 @@ import AppContext from '../context/AppContext';
 import LoggerContext from '../context/LoggerContext';
 import { useRos } from '../context/RosContext';
 
-const RobotModeValue = {
-  PREP: 1,
-  WALK: 2,
-  CUSTOM: 3,
+const UpcValue = {
+  ON: true,
+  OFF: false,
 };
 
 const BtnColor = {
-    PREP: 'success',
-    WALK: 'warning',
-    CUSTOM: 'error'
+    ON: 'success',
+    OFF: 'error',
 }
 
-function ChangeModeButton({ type }) {
+function ChangeUpcButton({ status }) {
   const { ros } = useRos();
   const { showLog } = useContext(LoggerContext);
-  const changeRobotModeServiceRef = useRef(null);
+  const changeUpcStateRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCall = () => {
     if (!ros) return;
     setIsLoading(true);
 
-    changeRobotModeServiceRef.current = new Service({
+    changeUpcStateRef.current = new Service({
       ros,
-      name: 'client/set_mode',
-      messageType: 'booster_client_interface/srv/SetMode',
+      name: 'client/set_upper_control',
+      messageType: 'booster_client_interface/srv/SetUpperControl',
     });
 
-    const payload = RobotModeValue[type];
+    const payload = UpcValue[status];
 
     if (payload === undefined) {
-      showLog(`Unknown robot mode type: ${type}`, 'error');
+      showLog(`Unknown upc status: ${status}`, 'error');
       setIsLoading(false);
       return;
     }
 
-    const request = new ServiceRequest({ mode: payload });
+    const request = new ServiceRequest({ enable: payload });
 
-    changeRobotModeServiceRef.current.callService(
+    changeUpcStateRef.current.callService(
       request,
       (response) => {
         if (response?.success) {
-          showLog(`Successfully set mode to ${type}`, 'success');
+          showLog(`Successfully set mode to ${status}`, 'success');
         } else {
-          showLog(`Failed to set mode to ${type}`, 'error');
+          showLog(`Failed to set mode to ${status}`, 'error');
         }
         setIsLoading(false);
       },
       (error) => {
-        showLog(`Error setting mode to ${type}`, error);
+        showLog(`Error setting mode to ${status}`, error);
         setIsLoading(false);
       }
     );
@@ -63,12 +61,12 @@ function ChangeModeButton({ type }) {
   return (
     <LoadingButton
       onClick={handleCall}
-      color={BtnColor[type]}
+      color={BtnColor[status]}
       variant="contained"
       loading={isLoading}
       sx={{ margin: 1 }}
     >
-      {type}
+      {status}
     </LoadingButton>
   );
 }
