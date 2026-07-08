@@ -21,6 +21,8 @@ function App() {
   const [jointSelected, setJointSelected] = useState([]);
   const [currentAction, setCurrentAction] = useState({});
   const [currentPose, setCurrentPose] = useState({});
+  const [robotMode, setRobotMode] = useState(null);
+  const [upcState, setUpcState] = useState(null);
 
   const updateActionsData = (newAction) => {
     setCurrentAction(newAction);
@@ -73,6 +75,8 @@ function App() {
         jointSelected,
         currentAction,
         currentPose,
+        robotMode,
+        upcState,
         setFetched,
         setActionsData,
         setPosesData,
@@ -82,7 +86,9 @@ function App() {
         setCurrentAction,
         setCurrentPose,
         updateActionsData,
-        updatePosesData
+        updatePosesData,
+        setRobotMode,
+        setUpcState
     }}
     >
       <DisableArrowScroll />

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Service, ServiceRequest } from 'roslib';
-
+import { Service, ServiceRequest, Topic } from 'roslib';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import AppContext from '../context/AppContext';
@@ -41,23 +40,12 @@ function LoadConfigButton() {
   const [isLoading, setIsLoading] = useState(false);
 
   const loadConfigServiceRef = useRef({});
+
   const services = {
-    akushon: {
-      name: 'akushon/config/get_actions',
-      messageType: 'akushon_interfaces/srv/GetActions',
-    },
-    aruku: {
-      name: 'aruku/config/get_config',
-      messageType: 'aruku_interfaces/srv/GetConfig',
-    },
-    ninshiki: {
-      name: 'ninshiki_cpp/config/get_color_setting',
-      messageType: 'ninshiki_interfaces/srv/GetColorSettings',
-    },
-    shisen: {
-      name: 'shisen_cpp/config/get_capture_setting',
-      messageType: 'shisen_interfaces/srv/GetCaptureSettings',
-    },
+    action: {
+      name: '/action/get_actions',
+      messageType: 'booster_action_interface/srv/GetActions',
+    }
   };
 
   Object.entries(services).forEach(([key, { name, messageType }]) => {
@@ -71,10 +59,7 @@ function LoadConfigButton() {
   const emptyRequest = new ServiceRequest({});
 
   // Load config values into AppContext
-  const { setCameraConfig } = useContext(AppContext);
-  const { setColorCalibration } = useContext(AppContext);
-  const { setKinematic, setWalking } = useContext(AppContext);
-  const { setActionsData } = useContext(AppContext);
+  const { setActionsData} = useContext(AppContext);
   // const { setCameraOffset } = useContext(AppContext);
 
   const handleLoadConfig = async () => {
@@ -106,17 +91,8 @@ function LoadConfigButton() {
     );
 
     await Promise.all(callLoadConfigService).then(() => {
-      // Update AppContext with the loaded config data
-      if (configData.shisen) {
-        setCameraConfig(configData.shisen);
-      }
-
-      if (configData.ninshiki) {
-        setColorCalibration(JSON.parse(configData.ninshiki.json_color));
-      }
-
-      if (configData.akushon) {
-        const jsonActionsData = JSON.parse(configData.akushon.json);
+      if (configData.action) {
+        const jsonActionsData = JSON.parse(configData.action.json);
         let idCounter = -1;
         const rawActions = [];
         Object.keys(jsonActionsData).forEach((key) => {
@@ -136,54 +112,20 @@ function LoadConfigButton() {
             fixedPoses.push({
               id: i,
               name: rawPoses[i].name,
-              speed: rawPoses[i].speed,
-              pause: rawPoses[i].pause,
-              time: rawPoses[i].time,
+              duration: rawPoses[i].duration,
+              delay_before: rawPoses[i].delay_before,
               joints: jointsData,
             });
           }
           rawActions.push({
             id: idCounter,
             name: jsonActionsData[key].name,
-            start_delay: jsonActionsData[key].start_delay,
-            stop_delay: jsonActionsData[key].stop_delay,
-            time_based: jsonActionsData[key].time_based,
+            control_type: jsonActionsData[key].control_type,
             next: jsonActionsData[key].next,
             poses: fixedPoses,
           });
         });
         setActionsData(rawActions);
-      }
-
-      if (configData.aruku) {
-        const newKinematic = JSON.parse(configData.aruku.json_kinematic);
-        const newWalking = JSON.parse(configData.aruku.json_walking);
-
-        setKinematic((prevKinematic) => {
-          const updatedKinematic = {};
-
-          Object.keys(prevKinematic).forEach((name) => {
-            updatedKinematic[name] = {
-              ...prevKinematic[name],
-              ...newKinematic[name],
-            };
-          });
-
-          return updatedKinematic;
-        });
-
-        setWalking((prevWalking) => {
-          const updatedWalking = {};
-
-          Object.keys(prevWalking).forEach((name) => {
-            updatedWalking[name] = {
-              ...prevWalking[name],
-              ...newWalking[name],
-            };
-          });
-
-          return updatedWalking;
-        });
       }
     });
 
